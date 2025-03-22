@@ -7,9 +7,28 @@ import CommunityIcon from './icons/IconCommunity.vue'
 import SupportIcon from './icons/IconSupport.vue'
 
 const openReadmeInEditor = () => fetch('/__open-in-editor?file=README.md')
+
+import { onMounted, ref } from 'vue'
+
+const posts = ref([])
+
+onMounted(async () => {
+  const payload = await fetch('/api/posts').then((res) => res.json())
+  posts.value = payload.posts
+  console.log(payload.posts)
+})
 </script>
 
 <template>
+  <WelcomeItem>
+    <template #heading>30 posts from dummyjson.com</template>
+
+    <ul>
+      <li v-for="post in posts" :key="post.id">
+        {{ post.title }} - views:{{ post.views }}
+      </li>
+    </ul>
+  </WelcomeItem>
   <WelcomeItem>
     <template #icon>
       <DocumentationIcon />
@@ -43,8 +62,7 @@ const openReadmeInEditor = () => fetch('/__open-in-editor?file=README.md')
     <br />
 
     More instructions are available in
-    <a href="javascript:void(0)" @click="openReadmeInEditor"><code>README.md</code></a
-    >.
+    <a href="javascript:void(0)" @click="openReadmeInEditor"><code>README.md</code></a>.
   </WelcomeItem>
 
   <WelcomeItem>
@@ -72,9 +90,8 @@ const openReadmeInEditor = () => fetch('/__open-in-editor?file=README.md')
     Got stuck? Ask your question on
     <a href="https://chat.vuejs.org" target="_blank" rel="noopener">Vue Land</a>
     (our official Discord server), or
-    <a href="https://stackoverflow.com/questions/tagged/vue.js" target="_blank" rel="noopener"
-      >StackOverflow</a
-    >. You should also follow the official
+    <a href="https://stackoverflow.com/questions/tagged/vue.js" target="_blank" rel="noopener">StackOverflow</a>. You
+    should also follow the official
     <a href="https://bsky.app/profile/vuejs.org" target="_blank" rel="noopener">@vuejs.org</a>
     Bluesky account or the
     <a href="https://x.com/vuejs" target="_blank" rel="noopener">@vuejs</a>
